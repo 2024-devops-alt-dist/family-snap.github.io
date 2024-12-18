@@ -1,88 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Family Snap - Share Your Moments</title>
+		<link rel="stylesheet" href="src/css/style.css" />
+		<!-- PWA meta tags -->
+		<meta name="theme-color" content="#ffffff" />
+		<meta
+			name="description"
+			content="Share and collect family moments in real-time"
+		/>
+		<link rel="manifest" href="manifest.json" />
+	</head>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Family Snap - Share Your Moments</title>
-	<link rel="stylesheet" href="src/css/style.css" />
-	<!-- PWA meta tags -->
-	<meta name="theme-color" content="#ffffff" />
-	<meta name="description" content="Share and collect family moments in real-time" />
-	<link rel="manifest" href="manifest.json" />
-</head>
+	<body>
+		<header>
+			<nav>
+				<h1>Family Snap</h1>
+				<div id="user-controls"></div>
+			</nav>
+		</header>
 
-<body>
-	<header>
-		<nav>
-			<h1>Family Snap</h1>
-			<div id="user-controls"></div>
-		</nav>
-	</header>
-
-	<main>
-		<section id="welcome-section" class="section">
-			<h2>Create or Join Family Events</h2>
-			<div class="buttons">
-				<button id="create-event-btn" class="btn primary">
-					Create Event
-				</button>
-				<button id="join-event-btn" class="btn secondary">
-					Join Event
-				</button>
-			</div>
-		</section>
-
-		<section id="event-form" class="section hidden">
-			<h2>Create New Event</h2>
-			<form id="create-event-form">
-				<div class="form-group">
-					<label for="event-title">Event Title</label>
-					<input type="text" id="event-title" required />
+		<main>
+			<section id="welcome-section" class="section">
+				<h2>Create or Join Family Events</h2>
+				<div class="buttons">
+					<button id="create-event-btn" class="btn primary">
+						Create Event
+					</button>
+					<button id="join-event-btn" class="btn secondary">
+						Join Event
+					</button>
 				</div>
-				<div class="form-group">
-					<label for="event-description">Description</label>
-					<textarea id="event-description" required></textarea>
+			</section>
+
+			<section id="event-form" class="section hidden">
+				<h2>Create New Event</h2>
+				<form id="create-event-form">
+					<div class="form-group">
+						<label for="event-title">Event Title</label>
+						<input type="text" id="event-title" required />
+					</div>
+					<div class="form-group">
+						<label for="event-description">Description</label>
+						<textarea id="event-description" required></textarea>
+					</div>
+					<div class="form-group">
+						<label for="event-date">Date</label>
+						<input type="date" id="event-date" required />
+					</div>
+					<div class="form-buttons">
+						<button type="submit" class="btn primary">Create</button>
+						<button type="button" class="btn secondary back-btn">
+							Back
+						</button>
+					</div>
+				</form>
+			</section>
+
+			<section id="join-form" class="section hidden">
+				<h2>Join Event</h2>
+				<form id="join-event-form">
+					<div class="form-group">
+						<label for="event-code">Enter Event Code</label>
+						<input type="text" id="event-code" required />
+					</div>
+					<div class="form-buttons">
+						<button type="submit" class="btn primary">Join</button>
+						<button type="button" class="btn secondary back-btn">
+							Back
+						</button>
+					</div>
+				</form>
+				<div id="qr-scanner-container"></div>
+			</section>
+
+			<section id="event-view" class="section hidden">
+				<div id="event-details"></div>
+				<div id="photo-gallery"></div>
+				<div class="photo-controls">
+					<button id="take-photo" class="btn primary">
+						Take Photo
+					</button>
+					<button id="upload-photo" class="btn secondary">
+						Upload Photo
+					</button>
 				</div>
-				<div class="form-group">
-					<label for="event-date">Date</label>
-					<input type="date" id="event-date" required />
-				</div>
-				<button type="submit" class="btn primary">Create</button>
-			</form>
-		</section>
+			</section>
+		</main>
 
-		<section id="join-form" class="section hidden">
-			<h2>Join Event</h2>
-			<form id="join-event-form">
-				<div class="form-group">
-					<label for="event-code">Enter Event Code</label>
-					<input type="text" id="event-code" required />
-				</div>
-				<button type="submit" class="btn primary">Join</button>
-			</form>
-			<div id="qr-scanner-container"></div>
-		</section>
+		<footer>
+			<p>&copy; 2024 Family Snap. All rights reserved.</p>
+		</footer>
 
-		<section id="event-view" class="section hidden">
-			<div id="event-details"></div>
-			<div id="photo-gallery"></div>
-			<div class="photo-controls">
-				<button id="take-photo" class="btn primary">
-					Take Photo
-				</button>
-				<button id="upload-photo" class="btn secondary">
-					Upload Photo
-				</button>
-			</div>
-		</section>
-	</main>
-
-	<footer>
-		<p>&copy; 2024 Family Snap. All rights reserved.</p>
-	</footer>
-
-	<script src="src/js/main.js" type="module"></script>
-</body>
-
+		<!-- Load QR code library from CDN -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+		<!-- Then load our module -->
+		<script src="src/js/main.js" type="module"></script>
+	</body>
 </html>

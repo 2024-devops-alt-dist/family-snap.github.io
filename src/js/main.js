@@ -1,3 +1,5 @@
+import { QRGenerator } from "./qrGenerator.js";
+
 // DOM Elements
 const elements = {
 	welcomeSection: document.getElementById("welcome-section"),
@@ -11,6 +13,9 @@ const elements = {
 	photoGallery: document.getElementById("photo-gallery"),
 	takePhotoBtn: document.getElementById("take-photo"),
 	uploadPhotoBtn: document.getElementById("upload-photo"),
+	eventDetails: document.getElementById("event-details"),
+	qrContainer: document.createElement("div"),
+	backButtons: document.querySelectorAll(".back-btn"),
 };
 
 // State Management
@@ -19,6 +24,10 @@ const state = {
 	photos: [],
 	isCreator: false,
 };
+
+// Initialize QR Generator
+elements.qrContainer.id = "qr-code";
+const qrGenerator = new QRGenerator(elements.qrContainer);
 
 // Event Handlers
 elements.createEventBtn.addEventListener("click", () => {
@@ -52,54 +61,17 @@ elements.createEventForm.addEventListener("submit", async (e) => {
 	}
 });
 
-elements.joinEventForm.addEventListener("submit", async (e) => {
-	e.preventDefault();
-	const eventCode = e.target.querySelector("#event-code").value;
-
-	try {
-		const event = await joinEvent(eventCode);
-		state.currentEvent = event;
-		state.isCreator = false;
-		showEventView();
-	} catch (error) {
-		console.error("Error joining event:", error);
-		alert("Invalid event code. Please try again.");
-	}
-});
-
-// Photo Handling
-elements.takePhotoBtn.addEventListener("click", async () => {
-	try {
-		const stream = await navigator.mediaDevices.getUserMedia({
-			video: true,
-		});
-		// Implementation for taking photos will go here
-		stream.getTracks().forEach((track) => track.stop());
-	} catch (error) {
-		console.error("Error accessing camera:", error);
-		alert("Unable to access camera. Please check permissions.");
-	}
-});
-
-elements.uploadPhotoBtn.addEventListener("click", () => {
-	const input = document.createElement("input");
-	input.type = "file";
-	input.accept = "image/*";
-	input.multiple = true;
-
-	input.addEventListener("change", async (e) => {
-		const files = Array.from(e.target.files);
-		try {
-			for (const file of files) {
-				await uploadPhoto(file);
-			}
-		} catch (error) {
-			console.error("Error uploading photos:", error);
-			alert("Failed to upload photos. Please try again.");
+// Back button functionality
+elements.backButtons.forEach((button) => {
+	button.addEventListener("click", () => {
+		hideAllSections();
+		elements.welcomeSection.classList.remove("hidden");
+		// Reset form if needed
+		const form = button.closest("form");
+		if (form) {
+			form.reset();
 		}
 	});
-
-	input.click();
 });
 
 // Utility Functions
@@ -122,41 +94,69 @@ function updateEventView() {
 	const eventDetails = document.getElementById("event-details");
 	eventDetails.innerHTML = `
         <h2>${state.currentEvent.title}</h2>
-        <p>${state.currentEvent.description}</p>
-        <p>Date: ${new Date(
+        <p class="event-description">${
+					state.currentEvent.description
+				}</p>
+        <p class="event-date">Date: ${new Date(
 					state.currentEvent.date
 				).toLocaleDateString()}</p>
         ${
 					state.isCreator
-						? `<p>Event Code: ${state.currentEvent.code}</p>`
+						? `<div class="event-code">
+            <p>Share this code with participants:</p>
+            <h3>${state.currentEvent.code}</h3>
+            <p>Or scan QR code:</p>
+            <div id="qr-container"></div>
+         </div>`
 						: ""
 				}
     `;
+
+	if (state.isCreator) {
+		// Get the container for QR code
+		const qrContainer = document.getElementById("qr-container");
+		if (qrContainer) {
+			try {
+				// Create new QR code
+				new QRCode(qrContainer, {
+					text: state.currentEvent.code,
+					width: 180,
+					height: 180,
+					colorDark: "#000000",
+					colorLight: "#ffffff",
+					correctLevel: QRCode.CorrectLevel.H,
+				});
+				console.log(
+					"QR Code generated directly for:",
+					state.currentEvent.code
+				); // Debug log
+			} catch (error) {
+				console.error("Error generating QR code:", error);
+				qrContainer.innerHTML =
+					'<p style="color: red;">Error generating QR code</p>';
+			}
+		}
+	}
 }
 
 function generateEventCode() {
-	return Math.random().toString(36).substring(2, 8).toUpperCase();
+	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	const length = 6;
+	let code = "";
+
+	// Generate random code
+	for (let i = 0; i < length; i++) {
+		code += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+
+	return code;
 }
 
 // API Functions (to be implemented with your preferred backend)
 async function createEvent(eventData) {
-	// TODO: Implement with your backend
+	// For now, just return the event data
+	// In a real implementation, this would send the data to a backend server
 	return eventData;
-}
-
-async function joinEvent(eventCode) {
-	// TODO: Implement with your backend
-	return {
-		title: "Test Event",
-		description: "Test Description",
-		date: new Date().toISOString(),
-		code: eventCode,
-	};
-}
-
-async function uploadPhoto(file) {
-	// TODO: Implement with your backend
-	console.log("Uploading photo:", file.name);
 }
 
 // Initialize the application
