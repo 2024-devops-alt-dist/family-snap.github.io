@@ -13,12 +13,9 @@ const elements = {
 	photoGallery: document.getElementById("photo-gallery"),
 	takePhotoBtn: document.getElementById("take-photo"),
 	uploadPhotoBtn: document.getElementById("upload-photo"),
-<<<<<<< HEAD
 	eventDetails: document.getElementById("event-details"),
 	qrContainer: document.createElement("div"),
-=======
 	backButtons: document.querySelectorAll(".back-btn"),
->>>>>>> dev
 };
 
 // State Management
@@ -62,6 +59,19 @@ elements.createEventForm.addEventListener("submit", async (e) => {
 		console.error("Error creating event:", error);
 		alert("Failed to create event. Please try again.");
 	}
+});
+
+// Back button functionality
+elements.backButtons.forEach((button) => {
+	button.addEventListener("click", () => {
+		hideAllSections();
+		elements.welcomeSection.classList.remove("hidden");
+		// Reset form if needed
+		const form = button.closest("form");
+		if (form) {
+			form.reset();
+		}
+	});
 });
 
 // Utility Functions
@@ -152,12 +162,4 @@ async function createEvent(eventData) {
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
 	// Check for existing session and restore state if needed
-});
-
-// Add back button event listeners
-elements.backButtons.forEach((button) => {
-	button.addEventListener("click", () => {
-		hideAllSections();
-		elements.welcomeSection.classList.remove("hidden");
-	});
 });
