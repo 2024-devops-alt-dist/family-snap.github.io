@@ -153,3 +153,18 @@ textarea {
 		padding: 1rem;
 	}
 }
+
+.form-buttons {
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+.back-btn {
+	background-color: #757575;
+}
+
+.back-btn:hover {
+	background-color: #616161;
+}

@@ -11,6 +11,7 @@ const elements = {
 	photoGallery: document.getElementById("photo-gallery"),
 	takePhotoBtn: document.getElementById("take-photo"),
 	uploadPhotoBtn: document.getElementById("upload-photo"),
+	backButtons: document.querySelectorAll(".back-btn"),
 };
 
 // State Management
@@ -162,4 +163,12 @@ async function uploadPhoto(file) {
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
 	// Check for existing session and restore state if needed
+});
+
+// Add back button event listeners
+elements.backButtons.forEach((button) => {
+	button.addEventListener("click", () => {
+		hideAllSections();
+		elements.welcomeSection.classList.remove("hidden");
+	});
 });
