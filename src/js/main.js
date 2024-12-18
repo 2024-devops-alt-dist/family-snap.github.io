@@ -13,8 +13,12 @@ const elements = {
 	photoGallery: document.getElementById("photo-gallery"),
 	takePhotoBtn: document.getElementById("take-photo"),
 	uploadPhotoBtn: document.getElementById("upload-photo"),
+<<<<<<< HEAD
 	eventDetails: document.getElementById("event-details"),
 	qrContainer: document.createElement("div"),
+=======
+	backButtons: document.querySelectorAll(".back-btn"),
+>>>>>>> dev
 };
 
 // State Management
@@ -148,4 +152,12 @@ async function createEvent(eventData) {
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
 	// Check for existing session and restore state if needed
+});
+
+// Add back button event listeners
+elements.backButtons.forEach((button) => {
+	button.addEventListener("click", () => {
+		hideAllSections();
+		elements.welcomeSection.classList.remove("hidden");
+	});
 });
