@@ -17,7 +17,7 @@ A Progressive Web App for sharing family moments in real-time. Create events, sh
 1. Clone the repository:
 
 ```bash
-git clone [repository-url]
+git clone https://github.com/2024-devops-alt-dist/family-snap-bd-ez-lf-ml.git
 cd family-snap
 ```
 
