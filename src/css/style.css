@@ -1,9 +1,10 @@
 :root {
 	--primary-color: #4caf50;
 	--secondary-color: #2196f3;
-	--background-color: #f5f5f5;
 	--text-color: #333;
-	--spacing-unit: 1rem;
+	--background-color: #ffffff;
+	--error-color: #f44336;
+	--success-color: #4caf50;
 }
 
 * {
@@ -13,37 +14,48 @@
 }
 
 body {
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		Oxygen, Ubuntu, Cantarell, sans-serif;
 	line-height: 1.6;
 	color: var(--text-color);
 	background-color: var(--background-color);
 }
 
 header {
-	background-color: white;
+	background-color: var(--primary-color);
+	color: white;
+	padding: 1rem;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	padding: var(--spacing-unit);
 }
 
 nav {
-	max-width: 1200px;
-	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
 main {
 	max-width: 1200px;
-	margin: 0 auto;
-	padding: var(--spacing-unit);
+	margin: 2rem auto;
+	padding: 0 1rem;
+}
+
+footer {
+	text-align: center;
+	padding: 1rem;
+	background-color: #f5f5f5;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
 }
 
 .section {
 	background-color: white;
 	border-radius: 8px;
-	padding: calc(var(--spacing-unit) * 2);
-	margin-bottom: var(--spacing-unit);
+	padding: 2rem;
+	margin-bottom: 2rem;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -51,12 +63,43 @@ main {
 	display: none;
 }
 
+.form-group {
+	margin-bottom: 1rem;
+}
+
+label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 500;
+}
+
+input,
+textarea {
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 1rem;
+}
+
+textarea {
+	min-height: 100px;
+	resize: vertical;
+}
+
+.buttons {
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	margin: 2rem 0;
+}
+
 .btn {
 	padding: 0.75rem 1.5rem;
 	border: none;
 	border-radius: 4px;
-	cursor: pointer;
 	font-size: 1rem;
+	cursor: pointer;
 	transition: background-color 0.3s ease;
 }
 
@@ -74,53 +117,39 @@ main {
 	opacity: 0.9;
 }
 
-.form-group {
-	margin-bottom: var(--spacing-unit);
-}
-
-.form-group label {
-	display: block;
-	margin-bottom: 0.5rem;
-	font-weight: bold;
-}
-
-.form-group input,
-.form-group textarea {
-	width: 100%;
-	padding: 0.5rem;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-}
-
 #photo-gallery {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: var(--spacing-unit);
-	margin: var(--spacing-unit) 0;
+	gap: 1rem;
+	margin: 2rem 0;
 }
 
 .photo-controls {
 	display: flex;
-	gap: var(--spacing-unit);
+	gap: 1rem;
 	justify-content: center;
-	margin-top: var(--spacing-unit);
 }
 
-footer {
+#event-details {
 	text-align: center;
-	padding: var(--spacing-unit);
-	margin-top: auto;
-	background-color: white;
-	border-top: 1px solid #ddd;
+	margin-bottom: 2rem;
+}
+
+#event-details h2 {
+	color: var(--primary-color);
+	margin-bottom: 1rem;
 }
 
 @media (max-width: 768px) {
 	.buttons {
 		flex-direction: column;
-		gap: var(--spacing-unit);
 	}
 
 	.btn {
 		width: 100%;
+	}
+
+	.section {
+		padding: 1rem;
 	}
 }
