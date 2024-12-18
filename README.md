@@ -18,7 +18,7 @@ A Progressive Web App for sharing family moments in real-time. Create events, sh
 
 ```bash
 git clone https://github.com/2024-devops-alt-dist/family-snap-bd-ez-lf-ml.git
-cd family-snap
+cd family-snap-bd-ez-lf-ml
 ```
 
 2. Install dependencies:
@@ -30,7 +30,7 @@ cd family-snap
 
 ```bash
 # If using live-server
-live-server src
+live-server .
 ```
 
 4. Open your browser and navigate to `http://localhost:8080` (or the URL provided by your development server)
@@ -38,14 +38,16 @@ live-server src
 ## Project Structure
 
 ```
-src/
-├── assets/         # Images and icons
-├── css/
-│   └── style.css   # Main stylesheet
-├── js/
-│   └── main.js     # Main JavaScript file
-├── index.html      # Main HTML file
-└── manifest.json   # PWA manifest
+/
+├── src/
+│   ├── assets/         # Images and icons
+│   ├── css/
+│   │   └── style.css   # Main stylesheet
+│   └── js/
+│       └── main.js     # Main JavaScript file
+├── index.html          # Main HTML file
+├── manifest.json       # PWA manifest
+└── README.md          # Documentation
 ```
 
 ## Contributing
