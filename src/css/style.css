@@ -253,3 +253,21 @@ html {
 .back-btn:hover {
 	background-color: #616161;
 }
+
+
+/* CSS for take Photo */
+
+video, canvas, img {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin: 0 auto 20px;
+  }
+
+button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
