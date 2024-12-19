@@ -88,24 +88,52 @@
 			</section>
 
 			<section id="event-view" class="section hidden">
-				<div id="event-details"></div>
+				<!-- Event Details -->
+				<div class="card event-title-card">
+					<h2 id="event-title-display">Party</h2>
+					<p id="event-description-display">d</p>
+					<p class="event-date" id="event-date-display">
+						Date: 2/12/2024
+					</p>
+				</div>
 
-				<!-- Photo Capture Section -->
-				<div class="photo-section">
-					<h2>Take a Photo</h2>
-					<video
-						id="video"
-						autoplay
-						playsinline
-						class="preview-video"
-					></video>
-					<canvas id="canvas" class="hidden"></canvas>
+				<!-- QR Code and Take Photo Container -->
+				<div class="top-section-container">
+					<!-- QR Code Section -->
+					<div class="qr-section">
+						<div class="card">
+							<div class="event-code">
+								<p>Share this code with participants:</p>
+								<h3 id="event-code-display">EPMLF J</h3>
+								<p>Or scan QR code:</p>
+								<div id="qr-container"></div>
+							</div>
+						</div>
+					</div>
 
-					<div class="photo-controls">
-						<button id="capture" class="btn primary">
-							Take Photo
-						</button>
-						<div>
+					<!-- Take Photo Section -->
+					<div class="photo-section">
+						<div class="section-title">
+							<span class="star">✧</span>
+							<h2>Take a Photo</h2>
+							<span class="star">✧</span>
+						</div>
+						<div class="preview-container">
+							<video
+								id="video"
+								autoplay
+								playsinline
+								class="preview-video"
+							></video>
+							<canvas id="canvas" class="hidden"></canvas>
+						</div>
+						<div class="photo-controls">
+							<button id="capture" class="btn primary">
+								Take Photo
+							</button>
+							<button id="fileInputButton" class="btn secondary">
+								Upload Photo
+							</button>
 							<input
 								type="file"
 								id="fileInput"
@@ -113,16 +141,17 @@
 								multiple
 								hidden
 							/>
-							<button id="fileInputButton" class="btn secondary">
-								Upload Photo
-							</button>
 						</div>
 					</div>
 				</div>
 
 				<!-- Gallery Section -->
-				<div class="gallery-section">
+				<div class="section-title">
+					<span class="star">✧</span>
 					<h2>Gallery</h2>
+					<span class="star">✧</span>
+				</div>
+				<div class="card gallery-card">
 					<div id="gallery"></div>
 				</div>
 			</section>
