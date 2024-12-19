@@ -103,7 +103,7 @@ elements.joinEventBtn.addEventListener("click", () => {
 	hideAllSections();
 	elements.joinForm.classList.remove("hidden");
 });
-
+let currentData = {};
 elements.createEventForm.addEventListener("submit", async (e) => {
 	e.preventDefault();
 	const eventData = {
@@ -113,6 +113,8 @@ elements.createEventForm.addEventListener("submit", async (e) => {
 		code: generateEventCode(),
 		createdAt: new Date().toISOString(),
 	};
+
+	currentData = eventData;
 
 	try {
 		await createEvent(eventData);
@@ -124,7 +126,17 @@ elements.createEventForm.addEventListener("submit", async (e) => {
 		alert("Failed to create event. Please try again.");
 	}
 });
-
+export function getCurrentData() {
+    return new Promise((resolve) => {
+        // Espera hasta que currentData tenga un valor
+        const checkData = setInterval(() => {
+            if (currentData && currentData.code) {
+                clearInterval(checkData);
+                resolve(currentData);
+            }
+        }, 100); // Verifica cada 100 ms
+    });
+}
 // Back button functionality
 elements.backButtons.forEach((button) => {
 	button.addEventListener("click", () => {
