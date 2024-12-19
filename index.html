@@ -7,7 +7,10 @@
 			content="width=device-width, initial-scale=1.0"
 		/>
 		<title>Family Snap - Share Your Moments</title>
+		<!-- base styles -->
 		<link rel="stylesheet" href="src/css/style.css" />
+		<!-- theme styles -->
+		<link rel="stylesheet" href="src/css/christmas.css" />
 		<!-- PWA meta tags -->
 		<meta name="theme-color" content="#ffffff" />
 		<meta
@@ -88,16 +91,41 @@
 
 			<section id="event-view" class="section hidden">
 				<div id="event-details"></div>
-				<div id="photo-gallery"></div>
-				<div class="photo-controls">
-					<button id="take-photo" class="btn primary">
-						Take Photo
-					</button>
-					<button id="upload-photo" class="btn secondary">
-						Upload Photo
-					</button>
-					<input type="file" id="fileInput" style="display: none;" />
-					<input type="file" id="cameraInput" accept="image/*" capture="camera" style="display: none;" />
+
+				<!-- Photo Capture Section -->
+				<div class="photo-section">
+					<h2>Take a Photo</h2>
+					<video
+						id="video"
+						autoplay
+						playsinline
+						class="preview-video"
+					></video>
+					<canvas id="canvas" class="hidden"></canvas>
+
+					<div class="photo-controls">
+						<button id="capture" class="btn primary">
+							Take Photo
+						</button>
+						<div>
+							<input
+								type="file"
+								id="fileInput"
+								accept="image/*"
+								multiple
+								hidden
+							/>
+							<button id="fileInputButton" class="btn secondary">
+								Upload Photo
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Gallery Section -->
+				<div class="gallery-section">
+					<h2>Gallery</h2>
+					<div id="gallery"></div>
 				</div>
 			</section>
 		</main>
@@ -110,5 +138,6 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 		<!-- Then load our module -->
 		<script src="src/js/main.js" type="module"></script>
+		<script src="src/js/photo.js" type="module"></script>
 	</body>
 </html>
