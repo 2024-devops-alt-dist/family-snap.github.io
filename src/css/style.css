@@ -254,6 +254,43 @@ html {
 	background-color: #616161;
 }
 
+.language-dropdown {
+	padding: 0.5rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 4px;
+	background-color: rgba(255, 255, 255, 0.1);
+	color: white;
+	font-size: 0.9rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right 0.5rem center;
+	background-size: 1.5em;
+	padding-right: 2.5rem;
+}
+
+.language-dropdown:hover {
+	background-color: rgba(255, 255, 255, 0.2);
+	border-color: rgba(255, 255, 255, 0.3);
+}
+
+.language-dropdown:focus {
+	outline: none;
+	background-color: rgba(255, 255, 255, 0.2);
+	border-color: rgba(255, 255, 255, 0.4);
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.language-dropdown option {
+	background-color: white;
+	color: var(--text-color);
+	padding: 0.5rem;
+}
+
 
 /* CSS for take Photo */
 
