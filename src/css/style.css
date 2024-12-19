@@ -290,3 +290,49 @@ html {
 	color: var(--text-color);
 	padding: 0.5rem;
 }
+
+
+/* CSS for take Photo */
+
+video, canvas, img {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin: 0 auto 20px;
+  }
+
+button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+#gallery {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	padding: 10px;
+}
+
+#gallery img {
+	max-width: 100%;
+	height: auto;
+	flex: 1 1 calc(30% - 20px); /* 3 images par ligne avec un espace de 10px entre elles */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+	#gallery img {
+		flex: 1 1 calc(45% - 20px); /* 2 images par ligne sur les écrans moyens */
+	}
+}
+
+@media (max-width: 480px) {
+	#gallery img {
+		flex: 1 1 calc(100% - 20px); /* 1 image par ligne sur les petits écrans */
+	}
+}
