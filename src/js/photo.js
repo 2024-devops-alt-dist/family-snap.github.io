@@ -30,6 +30,26 @@ function capturePhoto() {
   updateGallery();
 }
 
+// Ajouter des photos uploadées à la galerie
+function handleUpload(event) {
+  const files = event.target.files; // Récupère les fichiers uploadés
+
+  Array.from(files).forEach((file) => {
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        photos.push(e.target.result); // Ajoute la photo au tableau
+        updateGallery(); // Met à jour la galerie
+      };
+
+      reader.readAsDataURL(file); // Lit le fichier en Base64
+    } else {
+      alert("Veuillez sélectionner uniquement des fichiers image.");
+    }
+  });
+}
+
 // Mettre à jour l'affichage de la galerie
 function updateGallery() {
   // Efface le contenu actuel de la galerie
@@ -53,3 +73,6 @@ document.addEventListener("DOMContentLoaded", startCamera);
 
 // Événement : capturer une photo
 captureButton.addEventListener("click", capturePhoto);
+
+// Événement : ajouter des photos uploadées
+fileInput.addEventListener("change", handleUpload);
