@@ -11,11 +11,16 @@ const elements = {
 	joinEventBtn: document.getElementById("join-event-btn"),
 	createEventForm: document.getElementById("create-event-form"),
 	joinEventForm: document.getElementById("join-event-form"),
-	photoGallery: document.getElementById("photo-gallery"),
-	takePhotoBtn: document.getElementById("take-photo"),
-	uploadPhotoBtn: document.getElementById("upload-photo"),
-	eventDetails: document.getElementById("event-details"),
-	qrContainer: document.createElement("div"),
+	gallery: document.getElementById("gallery"),
+	capture: document.getElementById("capture"),
+	fileInputButton: document.getElementById("fileInputButton"),
+	eventTitleDisplay: document.getElementById("event-title-display"),
+	eventDescriptionDisplay: document.getElementById(
+		"event-description-display"
+	),
+	eventDateDisplay: document.getElementById("event-date-display"),
+	eventCodeDisplay: document.getElementById("event-code-display"),
+	qrContainer: document.getElementById("qr-container"),
 	backButtons: document.querySelectorAll(".back-btn"),
 	languageSelector: document.getElementById("language-selector"),
 };
@@ -29,7 +34,6 @@ const state = {
 };
 
 // Initialize QR Generator
-elements.qrContainer.id = "qr-code";
 const qrGenerator = new QRGenerator(elements.qrContainer);
 
 // Language handling
@@ -77,8 +81,9 @@ function updateUIText() {
 	).textContent = t.join;
 
 	// Update photo controls
-	elements.takePhotoBtn.textContent = t.takePhoto;
-	elements.uploadPhotoBtn.textContent = t.uploadPhoto;
+	if (elements.capture) elements.capture.textContent = t.takePhoto;
+	if (elements.fileInputButton)
+		elements.fileInputButton.textContent = t.uploadPhoto;
 
 	// Update footer
 	document.querySelector("footer p").textContent = t.footer;
@@ -168,51 +173,27 @@ function updateEventView() {
 	if (!state.currentEvent) return;
 
 	const t = translations[state.currentLanguage];
-	const eventDetails = document.getElementById("event-details");
-	eventDetails.innerHTML = `
-        <h2>${state.currentEvent.title}</h2>
-        <p class="event-description">${
-					state.currentEvent.description
-				}</p>
-        <p class="event-date">${t.date}: ${new Date(
-		state.currentEvent.date
-	).toLocaleDateString(state.currentLanguage)}</p>
-        ${
-					state.isCreator
-						? `<div class="event-code">
-            <p>${t.shareCode}:</p>
-            <h3>${state.currentEvent.code}</h3>
-            <p>${t.orScanQR}:</p>
-            <div id="qr-container"></div>
-         </div>`
-						: ""
-				}
-    `;
 
-	if (state.isCreator) {
-		// Get the container for QR code
-		const qrContainer = document.getElementById("qr-container");
-		if (qrContainer) {
-			try {
-				// Create new QR code
-				new QRCode(qrContainer, {
-					text: state.currentEvent.code,
-					width: 180,
-					height: 180,
-					colorDark: "#000000",
-					colorLight: "#ffffff",
-					correctLevel: QRCode.CorrectLevel.H,
-				});
-				console.log(
-					"QR Code generated directly for:",
-					state.currentEvent.code
-				);
-			} catch (error) {
-				console.error("Error generating QR code:", error);
-				qrContainer.innerHTML =
-					'<p style="color: red;">Error generating QR code</p>';
-			}
-		}
+	// Update event details
+	if (elements.eventTitleDisplay) {
+		elements.eventTitleDisplay.textContent = state.currentEvent.title;
+	}
+	if (elements.eventDescriptionDisplay) {
+		elements.eventDescriptionDisplay.textContent =
+			state.currentEvent.description;
+	}
+	if (elements.eventDateDisplay) {
+		elements.eventDateDisplay.textContent = `${t.date}: ${new Date(
+			state.currentEvent.date
+		).toLocaleDateString(state.currentLanguage)}`;
+	}
+	if (elements.eventCodeDisplay && state.isCreator) {
+		elements.eventCodeDisplay.textContent = state.currentEvent.code;
+	}
+
+	// Generate QR code if creator
+	if (state.isCreator && elements.qrContainer) {
+		qrGenerator.generate(state.currentEvent.code);
 	}
 }
 
