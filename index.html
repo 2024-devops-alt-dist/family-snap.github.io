@@ -78,28 +78,23 @@
 			<div id="event-details"></div>
 			<div id="photo-gallery"></div>
 			<div class="photo-controls">
-				<button id="take-photo" class="btn primary">
-					Take Photo
-				</button>
-				<button id="upload-photo" class="btn secondary">
-					Upload Photo
-				</button>
+				<!-- Bouton pour capturer la photo -->
+				<button id="capture" class="btn primary">Take Photo</button>
+				<div>
+					<!-- Input pour uploader des photos -->
+					<input type="file" id="fileInput" accept="image/*" multiple hidden>
+					<button id="fileInputButton" class="btn secondary">Upload Photo</button>
+				</div>
 			</div>
 
-			<!-- Input pour uploader des photos -->
-			<p>Upload Photo</p>
-			<input type="file" id="fileInput" accept="image/*" multiple>
-
-			<h1>Take a Photo</h1>
+			<h2>Take a Photo</h2>
 			<!-- Zone de prévisualisation -->
 			<video id="video" autoplay playsinline></video>
-			<!-- Bouton pour capturer la photo -->
-			<button id="capture">Take Photo</button>
-			<!-- Canvas pour afficher l'image capturée -->
-			<p>Last photo taken</p>
-			<canvas id="canvas"></canvas>
+
+			<!-- Canvas pour prendre l'image capturée -->
+			<canvas id="canvas" class="hidden"></canvas>
 			<!-- Conteneur pour afficher les photos capturées -->
-			<p>Gallery</p>
+			<h2>Gallery</h2>
 			<div id="gallery"></div>
 		</section>
 	</main>
@@ -112,7 +107,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 	<!-- Then load our module -->
 	<script src="src/js/main.js" type="module"></script>
-	<script src="src/js/takePhoto.js" type="module"></script>
+	<script src="src/js/photo.js" type="module"></script>
 </body>
 
 </html>

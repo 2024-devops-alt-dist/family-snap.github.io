@@ -2,6 +2,10 @@ const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const gallery = document.getElementById("gallery");
 const captureButton = document.getElementById("capture");
+// Remplacemer de l'input tag par un bouton
+document.getElementById("fileInputButton").addEventListener("click", () => {
+  document.getElementById("fileInput").click();
+});
 const constraints = { video: true }; // Utilisation de la caméra
 const photos = []; // Tableau pour stocker les photos capturées
 
@@ -60,7 +64,7 @@ function updateGallery() {
     const img = document.createElement("img");
     img.src = photoSrc;
     img.alt = `Photo ${index + 1}`;
-    img.style.width = "400px"; // Ajustez la taille selon vos besoins
+    img.style.width = "350px"; // Ajustez la taille selon vos besoins
     img.style.margin = "5px";
 
     // Ajoutez l'image à la galerie
