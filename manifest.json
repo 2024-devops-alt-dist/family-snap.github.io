@@ -5,5 +5,26 @@
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#ffffff",
-	"theme_color": "#4CAF50"
+	"theme_color": "#4CAF50",
+	"icons": [
+		{
+		  "src": "src/assets/icon-book.png",
+		  "sizes": "180x180",
+		  "type": "image/png"
+		}
+	  ],
+	  "screenshots": [
+		{
+		  "src": "src/assets/screenshot-mobile.png",
+		  "sizes": "360x640",
+		  "type": "image/png",
+		  "form_factor": "narrow" 
+		},
+		{
+		  "src": "src/assets/screenshot-wide.png",
+		  "sizes": "1280x720",
+		  "type": "image/png",
+		  "form_factor": "wide"
+		}
+	  ]
 }
