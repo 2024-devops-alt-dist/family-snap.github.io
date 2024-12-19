@@ -1,4 +1,6 @@
 import { QRGenerator } from "./qrGenerator.js";
+import { supabase } from "./supabase-config.js";
+import { showLoginSection, handleLoginForm, setupBackButtons, showRegisterSection, handleRegisterForm, handleLogout } from "./authentification.js";
 
 // DOM Elements
 const elements = {
@@ -16,6 +18,9 @@ const elements = {
 	eventDetails: document.getElementById("event-details"),
 	qrContainer: document.createElement("div"),
 	backButtons: document.querySelectorAll(".back-btn"),
+	loginSection: document.getElementById("login-section"),
+	registerSection: document.getElementById("register-section"),
+	logoutBtn: document.getElementById("logout-btn"),
 };
 
 // State Management
@@ -80,7 +85,17 @@ function hideAllSections() {
 	elements.eventForm.classList.add("hidden");
 	elements.joinForm.classList.add("hidden");
 	elements.eventView.classList.add("hidden");
+	elements.loginSection.classList.add("hidden");
+	elements.registerSection.classList.add("hidden");
 }
+
+// Setup login functionality
+showLoginSection(hideAllSections);
+handleLoginForm(hideAllSections, elements.welcomeSection, supabase);
+showRegisterSection(hideAllSections);
+handleRegisterForm(hideAllSections, elements.welcomeSection, supabase);
+handleLogout(supabase);
+setupBackButtons(hideAllSections, elements.welcomeSection);
 
 function showEventView() {
 	hideAllSections();

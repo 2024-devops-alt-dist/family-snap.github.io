@@ -253,3 +253,21 @@ html {
 .back-btn:hover {
 	background-color: #616161;
 }
+
+#login-section {
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+#login-section h2 {
+	text-align: center;
+}
+
+#register-section {
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+#register-section h2 {
+	text-align: center;
+}
