@@ -1,4 +1,5 @@
 import { QRGenerator } from "./qrGenerator.js";
+import { translations } from "./translations.js";
 
 // DOM Elements
 const elements = {
@@ -16,6 +17,7 @@ const elements = {
 	eventDetails: document.getElementById("event-details"),
 	qrContainer: document.createElement("div"),
 	backButtons: document.querySelectorAll(".back-btn"),
+	languageSelector: document.getElementById("language-selector"),
 };
 
 // State Management
@@ -23,13 +25,75 @@ const state = {
 	currentEvent: null,
 	photos: [],
 	isCreator: false,
+	currentLanguage: localStorage.getItem("language") || "en",
 };
 
 // Initialize QR Generator
 elements.qrContainer.id = "qr-code";
 const qrGenerator = new QRGenerator(elements.qrContainer);
 
+// Language handling
+function updateLanguage(lang) {
+	state.currentLanguage = lang;
+	localStorage.setItem("language", lang);
+	updateUIText();
+}
+
+function updateUIText() {
+	const t = translations[state.currentLanguage];
+
+	// Update static text
+	document.querySelector("h1").textContent = t.title;
+	document.querySelector("#welcome-section h2").textContent =
+		t.welcome;
+	elements.createEventBtn.textContent = t.createEvent;
+	elements.joinEventBtn.textContent = t.joinEvent;
+
+	// Update form texts
+	document.querySelector("#event-form h2").textContent =
+		t.createNewEvent;
+	document.querySelector('label[for="event-title"]').textContent =
+		t.eventTitle;
+	document.querySelector(
+		'label[for="event-description"]'
+	).textContent = t.description;
+	document.querySelector('label[for="event-date"]').textContent =
+		t.date;
+
+	// Update buttons
+	document.querySelector(
+		"#create-event-form .btn.primary"
+	).textContent = t.create;
+	document
+		.querySelectorAll(".back-btn")
+		.forEach((btn) => (btn.textContent = t.back));
+
+	// Update join form
+	document.querySelector("#join-form h2").textContent = t.joinEvent;
+	document.querySelector('label[for="event-code"]').textContent =
+		t.enterEventCode;
+	document.querySelector(
+		"#join-event-form .btn.primary"
+	).textContent = t.join;
+
+	// Update photo controls
+	elements.takePhotoBtn.textContent = t.takePhoto;
+	elements.uploadPhotoBtn.textContent = t.uploadPhoto;
+
+	// Update footer
+	document.querySelector("footer p").textContent = t.footer;
+
+	// Update event view if there's a current event
+	if (state.currentEvent) {
+		updateEventView();
+	}
+}
+
 // Event Handlers
+elements.languageSelector.addEventListener("change", (e) => {
+	updateLanguage(e.target.value);
+});
+
 elements.createEventBtn.addEventListener("click", () => {
 	hideAllSections();
 	elements.eventForm.classList.remove("hidden");
@@ -91,21 +155,22 @@ function showEventView() {
 function updateEventView() {
 	if (!state.currentEvent) return;
 
+	const t = translations[state.currentLanguage];
 	const eventDetails = document.getElementById("event-details");
 	eventDetails.innerHTML = `
         <h2>${state.currentEvent.title}</h2>
         <p class="event-description">${
 					state.currentEvent.description
 				}</p>
-        <p class="event-date">Date: ${new Date(
-					state.currentEvent.date
-				).toLocaleDateString()}</p>
+        <p class="event-date">${t.date}: ${new Date(
+		state.currentEvent.date
+	).toLocaleDateString(state.currentLanguage)}</p>
         ${
 					state.isCreator
 						? `<div class="event-code">
-            <p>Share this code with participants:</p>
+            <p>${t.shareCode}:</p>
             <h3>${state.currentEvent.code}</h3>
-            <p>Or scan QR code:</p>
+            <p>${t.orScanQR}:</p>
             <div id="qr-container"></div>
          </div>`
 						: ""
@@ -129,7 +194,7 @@ function updateEventView() {
 				console.log(
 					"QR Code generated directly for:",
 					state.currentEvent.code
-				); // Debug log
+				);
 			} catch (error) {
 				console.error("Error generating QR code:", error);
 				qrContainer.innerHTML =
@@ -161,5 +226,7 @@ async function createEvent(eventData) {
 
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
-	// Check for existing session and restore state if needed
+	// Set initial language
+	elements.languageSelector.value = state.currentLanguage;
+	updateUIText();
 });
