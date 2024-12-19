@@ -7,7 +7,10 @@
 			content="width=device-width, initial-scale=1.0"
 		/>
 		<title>Family Snap - Share Your Moments</title>
+		<!-- base styles -->
 		<link rel="stylesheet" href="src/css/style.css" />
+		<!-- theme styles -->
+		<link rel="stylesheet" href="src/css/christmas.css" />
 		<!-- PWA meta tags -->
 		<meta name="theme-color" content="#ffffff" />
 		<meta
@@ -26,6 +29,10 @@
 				<div id="user-controls">
 					<button id="login-btn" class="btn secondary">Login</button>
 					<button id="logout-btn" class="btn secondary hidden">Sign Out</button>
+					<select id="language-selector" class="language-dropdown">
+						<option value="en">English</option>
+						<option value="fr">Français</option>
+					</select>
 				</div>
 			</nav>
 		</header>
@@ -123,15 +130,71 @@
 			</section>
 
 			<section id="event-view" class="section hidden">
-				<div id="event-details"></div>
-				<div id="photo-gallery"></div>
-				<div class="photo-controls">
-					<button id="take-photo" class="btn primary">
-						Take Photo
-					</button>
-					<button id="upload-photo" class="btn secondary">
-						Upload Photo
-					</button>
+				<!-- Event Details -->
+				<div class="card event-title-card">
+					<h2 id="event-title-display">Party</h2>
+					<p id="event-description-display">d</p>
+					<p class="event-date" id="event-date-display">
+						Date: 2/12/2024
+					</p>
+				</div>
+
+				<!-- QR Code and Take Photo Container -->
+				<div class="top-section-container">
+					<!-- QR Code Section -->
+					<div class="qr-section">
+						<div class="card">
+							<div class="event-code">
+								<p>Share this code with participants:</p>
+								<h3 id="event-code-display">EPMLF J</h3>
+								<p>Or scan QR code:</p>
+								<div id="qr-container"></div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Take Photo Section -->
+					<div class="photo-section">
+						<div class="section-title">
+							<span class="star">✧</span>
+							<h2>Take a Photo</h2>
+							<span class="star">✧</span>
+						</div>
+						<div class="preview-container">
+							<video
+								id="video"
+								autoplay
+								playsinline
+								class="preview-video"
+							></video>
+							<canvas id="canvas" class="hidden"></canvas>
+						</div>
+						<div class="photo-controls">
+							<button id="capture" class="btn primary">
+								Take Photo
+							</button>
+							<button id="fileInputButton" class="btn secondary">
+								Upload Photo
+							</button>
+							<input
+								type="file"
+								id="fileInput"
+								accept="image/*"
+								multiple
+								hidden
+							/>
+						</div>
+					</div>
+				</div>
+
+				<!-- Gallery Section -->
+				<div class="section-title">
+					<span class="star">✧</span>
+					<h2>Gallery</h2>
+					<span class="star">✧</span>
+				</div>
+				<div class="card gallery-card">
+					<div id="gallery"></div>
 				</div>
 			</section>
 		</main>
@@ -144,5 +207,6 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 		<!-- Then load our module -->
 		<script src="src/js/main.js" type="module"></script>
+		<script src="src/js/photo.js" type="module"></script>
 	</body>
 </html>
