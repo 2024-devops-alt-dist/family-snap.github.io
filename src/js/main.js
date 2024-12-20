@@ -1,7 +1,15 @@
 import { supabase } from "./supabase-config.js"
 import { QRGenerator } from "./qrGenerator.js";
 import { translations } from "./translations.js";
-import { showLoginSection, handleLoginForm, setupBackButtons, showRegisterSection, handleRegisterForm, handleLogout } from "./authentification.js";
+import { supabase } from "./supabase-config.js";
+import {
+	showLoginSection,
+	handleLoginForm,
+	setupBackButtons,
+	showRegisterSection,
+	handleRegisterForm,
+	handleLogout,
+} from "./authentification.js";
 
 // DOM Elements
 const elements = {
@@ -40,6 +48,64 @@ const state = {
 
 // Initialize QR Generator
 const qrGenerator = new QRGenerator(elements.qrContainer);
+
+// Language handling
+function updateLanguage(lang) {
+	state.currentLanguage = lang;
+	localStorage.setItem("language", lang);
+	updateUIText();
+}
+
+function updateUIText() {
+	const t = translations[state.currentLanguage];
+
+	// Update static text
+	document.querySelector("h1").textContent = t.title;
+	document.querySelector("#welcome-section h2").textContent =
+		t.welcome;
+	elements.createEventBtn.textContent = t.createEvent;
+	elements.joinEventBtn.textContent = t.joinEvent;
+
+	// Update form texts
+	document.querySelector("#event-form h2").textContent =
+		t.createNewEvent;
+	document.querySelector('label[for="event-title"]').textContent =
+		t.eventTitle;
+	document.querySelector(
+		'label[for="event-description"]'
+	).textContent = t.description;
+	document.querySelector('label[for="event-date"]').textContent =
+		t.date;
+
+	// Update buttons
+	document.querySelector(
+		"#create-event-form .btn.primary"
+	).textContent = t.create;
+	document
+		.querySelectorAll(".back-btn")
+		.forEach((btn) => (btn.textContent = t.back));
+
+	// Update join form
+	document.querySelector("#join-form h2").textContent = t.joinEvent;
+	document.querySelector('label[for="event-code"]').textContent =
+		t.enterEventCode;
+	document.querySelector(
+		"#join-event-form .btn.primary"
+	).textContent = t.join;
+
+	// Update photo controls
+	if (elements.capture) elements.capture.textContent = t.takePhoto;
+	if (elements.fileInputButton)
+		elements.fileInputButton.textContent = t.uploadPhoto;
+
+	// Update footer
+	document.querySelector("footer p").textContent = t.footer;
+
+	// Update event view if there's a current event
+	if (state.currentEvent) {
+		updateEventView();
+	}
+}
 
 // Event Handlers
 elements.languageSelector.addEventListener("change", (e) => {
@@ -115,7 +181,11 @@ function hideAllSections() {
 showLoginSection(hideAllSections);
 handleLoginForm(hideAllSections, elements.welcomeSection, supabase);
 showRegisterSection(hideAllSections);
-handleRegisterForm(hideAllSections, elements.welcomeSection, supabase);
+handleRegisterForm(
+	hideAllSections,
+	elements.welcomeSection,
+	supabase
+);
 handleLogout(supabase);
 setupBackButtons(hideAllSections, elements.welcomeSection);
 
