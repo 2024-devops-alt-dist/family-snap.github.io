@@ -63,7 +63,7 @@ document.getElementById("capture").addEventListener("click", () => {
     context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
 
     canvas.toBlob(async (blob) => {
-        const file = new File([blob], "captura.jpg", { type: "image/jpeg" });
+        const file = new File([blob], `captura-${Date.now()}.jpg`, { type: "image/jpeg" });
         const imageUrl = await uploadImage(file, eventId);
         if (imageUrl) {
             console.log("Imagen subida correctamente:", imageUrl);
