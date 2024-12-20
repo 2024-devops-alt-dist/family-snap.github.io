@@ -153,6 +153,30 @@ export function getCurrentData() {
         }, 100);
     });
 }
+
+elements.joinEventForm.addEventListener("submit", async (e) => {
+	e.preventDefault();
+
+	const eventCode = e.target.querySelector("#event-code").value;
+
+	try {
+		const event = await getEventByCode(eventCode);
+
+		if (event) {
+			state.currentEvent = event;
+			state.isCreator = true;
+
+			updateEventView();
+			showEventView();
+		} else {
+			alert("Event not found. Please check the code and try again.");
+		}
+	} catch (error) {
+		console.error("Error joining event:", error);
+		alert("Failed to join the event. Please try again.");
+	}
+});
+
 // Back button functionality
 elements.backButtons.forEach((button) => {
 	button.addEventListener("click", () => {
@@ -283,6 +307,24 @@ async function uploadEvent(eventData) {
     }
 }
 
+async function getEventByCode(code) {
+	try {
+		const { data, error } = await supabase
+			.from("events")
+			.select("*")
+			.eq("code", code)
+			.single();
+
+		if (error) {
+			throw error;
+		}
+
+		return data;
+	} catch (error) {
+		console.error("Error fetching event by code:", error.message);
+		throw error;
+	}
+}
 
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
