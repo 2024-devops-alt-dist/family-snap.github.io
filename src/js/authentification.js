@@ -13,13 +13,32 @@ const notificationMessage = document.getElementById(
 );
 
 function showNotification(message, duration = 3000) {
+	if (!notificationModal || !notificationMessage) {
+		console.error("Notification elements not found");
+		return;
+	}
+
 	notificationMessage.textContent = message;
 	notificationModal.classList.remove("hidden");
 
-	setTimeout(() => {
+	// Clear any existing timeout
+	if (window.notificationTimeout) {
+		clearTimeout(window.notificationTimeout);
+	}
+
+	window.notificationTimeout = setTimeout(() => {
 		notificationModal.classList.add("hidden");
 	}, duration);
 }
+
+// Initialize notification elements after DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+	if (!notificationModal || !notificationMessage) {
+		console.error(
+			"Notification elements not found during initialization"
+		);
+	}
+});
 
 export function showLoginSection(hideAllSections) {
 	loginBtn.addEventListener("click", () => {
