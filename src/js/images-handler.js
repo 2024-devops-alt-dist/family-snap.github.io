@@ -1,46 +1,33 @@
 import { supabase } from "./supabase-config.js"
 import { getCurrentData } from "./main.js";
 
-const baseURL = 'https://phaavyhwbzmzfrndwkwb.supabase.co/storage/v1/object/public/';
+const baseURL = 'https://nyrvwnhonznixxnclqbg.supabase.co/storage/v1/object/public/';
 
 async function fetchEventData() {
     const data = await getCurrentData();
-    console.log('data code es:', data.code);
-
-    const code = data.code || '';
-    console.log('event code es:', code);
-    return code
+    const eventCode = data.code || '';
+    return eventCode;
 }
 
-const eventId = await fetchEventData();
-console.log('event id es:', eventId);
+const eventCode = await fetchEventData();
+const eventId = localStorage.getItem('currentEventId'); 
+
 
 async function uploadImage(file, eventId) {
     const { data, error } = await supabase.storage
         .from("event-images") 
-        .upload(`${eventId}/${file.name}`, file);
-        console.log(`Uploading image with path: ${eventId}/${file.name}`);
+        .upload(`${eventCode}/${file.name}`, file);
+        console.log(`Uploading image with path: ${eventCode}/${file.name}`);
         if (error) {
-            console.log("Error uploading the image:", error.message);  // Asegúrate de ver los errores
+            console.log("Error uploading the image:", error.message);
             return null;
         } else {
             console.log("Image correctly uploaded:", data);
         }
-    const imageURL = `${baseURL}/event-images/${eventId}/${file.name}`;
+    const imageURL = `${baseURL}/event-images/${eventCode}/${file.name}`;
 
-    const uploadedPath = data.path;
-    
-    // const { publicURL, error: urlError } = supabase.storage
-    //     .from("event-images")
-    //     .getPublicUrl(data.path);
-    // if (urlError) {
-    //     console.log("Error getting public URL:", urlError.message);
-    //     return null;
-    // }
-        
-    // console.log('url', publicURL)
     await supabase.from('photos').insert({
-        event_id: parseInt(eventId),
+        event_id: eventId,
         path: imageURL
     });
 
