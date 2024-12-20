@@ -57,7 +57,7 @@ function handleUpload(event) {
 // Mettre à jour l'affichage de la galerie
 function updateGallery() {
   // Efface le contenu actuel de la galerie
-  // gallery.innerHTML = "";
+  gallery.innerHTML = "";
 
   // Parcourt le tableau des photos et les ajoute à la galerie
   photos.forEach((photoSrc, index) => {
