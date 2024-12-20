@@ -143,6 +143,68 @@ export function getCurrentData() {
     }, 100);
   });
 }
+
+elements.joinEventForm.addEventListener("submit", async (e) => {
+	e.preventDefault();
+
+	const eventCode = e.target.querySelector("#event-code").value;
+
+	try {
+		const event = await getEventByCode(eventCode);
+
+		if (event) {
+			state.currentEvent = event;
+			state.isCreator = true;
+
+			updateEventView();
+			showEventView();
+		} else {
+			alert("Event not found. Please check the code and try again.");
+		}
+	} catch (error) {
+		console.error("Error joining event:", error);
+		alert("Failed to join the event. Please try again.");
+	}
+});
+
+async function fetchEventPhotos(eventId) {
+  const { data, error } = await supabase
+      .from('photos')
+      .select('path')
+      .eq('event_id', eventId);
+
+  if (error) {
+    console.error("Error fetching photos:", error.message);
+    return [];
+  }
+
+  return data;
+}
+
+async function updateGalleryWithEventPhotos() {
+  const eventId = state.currentEvent?.id;
+  if (!eventId) return;
+
+  const photos = await fetchEventPhotos(eventId);
+  const gallery = document.getElementById('gallery');
+
+  // Loop through the photos and add them to the gallery if not already present
+  photos.forEach((photo) => {
+    const img = document.createElement('img');
+    img.src = photo.path;
+    img.alt = 'Event photo';
+    img.style.width = '350px';
+    img.style.margin = '5px';
+
+    const existingImages = gallery.querySelectorAll('img');
+    const isAlreadyAdded = Array.from(existingImages).some(image => image.src === img.src);
+
+    if (!isAlreadyAdded) {
+      gallery.appendChild(img); // Add image if not already added
+    }
+  });
+}
+
 // Back button functionality
 elements.backButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -178,6 +240,7 @@ function showEventView() {
   hideAllSections();
   elements.eventView.classList.remove("hidden");
   updateEventView();
+  updateGalleryWithEventPhotos();
 }
 
 function updateEventView() {
@@ -270,6 +333,25 @@ async function uploadEvent(eventData) {
     console.error("Error in uploadEvent:", error);
     throw error;
   }
+}
+
+async function getEventByCode(code) {
+	try {
+		const { data, error } = await supabase
+			.from("events")
+			.select("*")
+			.eq("code", code)
+			.single();
+
+		if (error) {
+			throw error;
+		}
+
+		return data;
+	} catch (error) {
+		console.error("Error fetching event by code:", error.message);
+		throw error;
+	}
 }
 
 // Initialize the application
