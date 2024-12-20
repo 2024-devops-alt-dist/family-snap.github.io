@@ -1,4 +1,3 @@
-import { supabase } from "./supabase-config.js"
 import { QRGenerator } from "./qrGenerator.js";
 import { translations } from "./translations.js";
 import { supabase } from "./supabase-config.js";
