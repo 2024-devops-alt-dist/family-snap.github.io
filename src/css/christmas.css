@@ -389,3 +389,71 @@ h2::after {
 	box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
 	transform: translateY(-1px);
 }
+
+/* Notification Christmas styles */
+.notification-content {
+	background: linear-gradient(
+		135deg,
+		var(--primary-color),
+		var(--secondary-color)
+	);
+	border: 3px solid var(--gold-accent);
+	color: white;
+	position: relative;
+	overflow: hidden;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2),
+		inset 0 0 30px rgba(255, 215, 0, 0.1);
+}
+
+.notification-content::before {
+	content: "✧";
+	position: absolute;
+	left: 1.5rem;
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--gold-accent);
+	font-size: 1.2rem;
+}
+
+.notification-content::after {
+	content: "✧";
+	position: absolute;
+	right: 1.5rem;
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--gold-accent);
+	font-size: 1.2rem;
+}
+
+.notification-content p {
+	position: relative;
+	z-index: 2;
+}
+
+/* Add shine effect */
+@keyframes notification-shine {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+.notification-content::before,
+.notification-content::after {
+	animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}

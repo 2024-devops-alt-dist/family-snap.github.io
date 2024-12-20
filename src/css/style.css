@@ -455,3 +455,38 @@ textarea {
 #register-section h2 {
 	text-align: center;
 }
+
+/* Notification Modal */
+.notification-modal {
+	position: fixed;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 9999;
+	transition: all 0.3s ease-in-out;
+	opacity: 1;
+	width: 90%;
+	max-width: 600px;
+	pointer-events: none;
+}
+
+.notification-modal.hidden {
+	opacity: 0;
+	transform: translateX(-50%) translateY(-20px);
+}
+
+.notification-content {
+	background: rgba(0, 0, 0, 0.9);
+	color: white;
+	padding: 1.25rem 3rem;
+	border-radius: 50px;
+	text-align: center;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	font-weight: 500;
+	font-size: 1.1rem;
+}
+
+.notification-content p {
+	margin: 0;
+	line-height: 1.5;
+}
