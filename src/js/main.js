@@ -1,6 +1,6 @@
+import { supabase } from "./supabase-config.js"
 import { QRGenerator } from "./qrGenerator.js";
 import { translations } from "./translations.js";
-import { supabase } from "./supabase-config.js";
 import { showLoginSection, handleLoginForm, setupBackButtons, showRegisterSection, handleRegisterForm, handleLogout } from "./authentification.js";
 
 // DOM Elements
@@ -65,10 +65,10 @@ elements.createEventForm.addEventListener("submit", async (e) => {
 		code: generateEventCode(),
 		createdAt: new Date().toISOString(),
 	};
-
-	currentData = eventData;
-
+	currentData = eventData;	
 	try {
+		const eventId = await uploadEvent(eventData); 
+		localStorage.setItem('currentEventId', eventId);
 		await createEvent(eventData);
 		state.currentEvent = eventData;
 		state.isCreator = true;
@@ -80,13 +80,12 @@ elements.createEventForm.addEventListener("submit", async (e) => {
 });
 export function getCurrentData() {
     return new Promise((resolve) => {
-        // Espera hasta que currentData tenga un valor
         const checkData = setInterval(() => {
             if (currentData && currentData.code) {
                 clearInterval(checkData);
                 resolve(currentData);
             }
-        }, 100); // Verifica cada 100 ms
+        }, 100);
     });
 }
 // Back button functionality
@@ -169,10 +168,52 @@ function generateEventCode() {
 
 // API Functions (to be implemented with your preferred backend)
 async function createEvent(eventData) {
-	// For now, just return the event data
-	// In a real implementation, this would send the data to a backend server
 	return eventData;
 }
+
+// get the id of the user that's currently logged
+async function getUserId() {
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (error) {
+        console.error("Error fetching user:", error.message);
+        return null;
+    }
+
+    return user?.id;
+}
+
+async function uploadEvent(eventData) {
+    try {
+        const userId = await getUserId();
+        if (!userId) {
+            throw new Error("Couldn't get the user");
+        }
+
+        const { data, error } = await supabase
+            .from("events")
+            .insert({
+                title: eventData.title,
+                description: eventData.description,
+                date: eventData.date,
+                code: eventData.code,
+                user_id: userId,
+            })
+            .select();
+
+        if (error) {
+            console.error("Error inserting event:", error.message);
+            throw error;
+        }
+
+        console.log("Event inserted:", data);
+        return data[0]?.id;
+    } catch (error) {
+        console.error("Error in uploadEvent:", error);
+        throw error;
+    }
+}
+
 
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
