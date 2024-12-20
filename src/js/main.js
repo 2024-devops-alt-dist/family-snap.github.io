@@ -46,6 +46,56 @@ const state = {
 // Initialize QR Generator
 const qrGenerator = new QRGenerator(elements.qrContainer);
 
+// Language handling
+function updateLanguage(lang) {
+  state.currentLanguage = lang;
+  localStorage.setItem("language", lang);
+  updateUIText();
+}
+
+function updateUIText() {
+  const t = translations[state.currentLanguage];
+
+  // Update static text
+  document.querySelector("h1").textContent = t.title;
+  document.querySelector("#welcome-section h2").textContent = t.welcome;
+  elements.createEventBtn.textContent = t.createEvent;
+  elements.joinEventBtn.textContent = t.joinEvent;
+
+  // Update form texts
+  document.querySelector("#event-form h2").textContent = t.createNewEvent;
+  document.querySelector('label[for="event-title"]').textContent = t.eventTitle;
+  document.querySelector('label[for="event-description"]').textContent =
+    t.description;
+  document.querySelector('label[for="event-date"]').textContent = t.date;
+
+  // Update buttons
+  document.querySelector("#create-event-form .btn.primary").textContent =
+    t.create;
+  document
+    .querySelectorAll(".back-btn")
+    .forEach((btn) => (btn.textContent = t.back));
+
+  // Update join form
+  document.querySelector("#join-form h2").textContent = t.joinEvent;
+  document.querySelector('label[for="event-code"]').textContent =
+    t.enterEventCode;
+  document.querySelector("#join-event-form .btn.primary").textContent = t.join;
+
+  // Update photo controls
+  if (elements.capture) elements.capture.textContent = t.takePhoto;
+  if (elements.fileInputButton)
+    elements.fileInputButton.textContent = t.uploadPhoto;
+
+  // Update footer
+  document.querySelector("footer p").textContent = t.footer;
+
+  // Update event view if there's a current event
+  if (state.currentEvent) {
+    updateEventView();
+  }
+}
+
 // Event Handlers
 elements.languageSelector.addEventListener("change", (e) => {
   updateLanguage(e.target.value);
@@ -60,7 +110,7 @@ elements.joinEventBtn.addEventListener("click", () => {
   hideAllSections();
   elements.joinForm.classList.remove("hidden");
 });
-
+let currentData = {};
 elements.createEventForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const eventData = {
@@ -70,8 +120,10 @@ elements.createEventForm.addEventListener("submit", async (e) => {
     code: generateEventCode(),
     createdAt: new Date().toISOString(),
   };
-
+  currentData = eventData;
   try {
+    const eventId = await uploadEvent(eventData);
+    localStorage.setItem("currentEventId", eventId);
     await createEvent(eventData);
     state.currentEvent = eventData;
     state.isCreator = true;
@@ -81,7 +133,16 @@ elements.createEventForm.addEventListener("submit", async (e) => {
     alert("Failed to create event. Please try again.");
   }
 });
-
+export function getCurrentData() {
+  return new Promise((resolve) => {
+    const checkData = setInterval(() => {
+      if (currentData && currentData.code) {
+        clearInterval(checkData);
+        resolve(currentData);
+      }
+    }, 100);
+  });
+}
 // Back button functionality
 elements.backButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -162,9 +223,53 @@ function generateEventCode() {
 
 // API Functions (to be implemented with your preferred backend)
 async function createEvent(eventData) {
-  // For now, just return the event data
-  // In a real implementation, this would send the data to a backend server
   return eventData;
+}
+
+// get the id of the user that's currently logged
+async function getUserId() {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error) {
+    console.error("Error fetching user:", error.message);
+    return null;
+  }
+
+  return user?.id;
+}
+
+async function uploadEvent(eventData) {
+  try {
+    const userId = await getUserId();
+    if (!userId) {
+      throw new Error("Couldn't get the user");
+    }
+
+    const { data, error } = await supabase
+      .from("events")
+      .insert({
+        title: eventData.title,
+        description: eventData.description,
+        date: eventData.date,
+        code: eventData.code,
+        user_id: userId,
+      })
+      .select();
+
+    if (error) {
+      console.error("Error inserting event:", error.message);
+      throw error;
+    }
+
+    console.log("Event inserted:", data);
+    return data[0]?.id;
+  } catch (error) {
+    console.error("Error in uploadEvent:", error);
+    throw error;
+  }
 }
 
 // Initialize the application
